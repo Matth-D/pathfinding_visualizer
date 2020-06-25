@@ -1,7 +1,8 @@
 ### REQUIREMENTS
 
-Python 3+  
-PySide2 --> `pip install PySide2`
+Python 3+ installed on your machine, add Python to PATH during the install  
+
+PySide2 --> `pip install PySide2` in a terminal
 
 ### HOW TO USE 
 
