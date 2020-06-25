@@ -1,11 +1,11 @@
 ## REQUIREMENTS
 
     Python 3+
-    PySide2
+    PySide2 `pip install PySide2`
 
 ## HOW TO USE 
 
-    In a terminal navigate to the pathfinding_visualizer repository and enter "python pathfinder_exec.py"
+    In a terminal navigate to the pathfinding_visualizer repository and enter `python pathfinder_exec.py`
 
     Use top slider to adjust grid density
     Pick a start position
