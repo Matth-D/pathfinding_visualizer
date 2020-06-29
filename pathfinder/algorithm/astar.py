@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets, QtGui, QtCore
+"""A* (A-star) algorithm module."""
 
 
 class Node:
@@ -18,6 +18,7 @@ class Node:
 
     @property
     def f_cost(self):
+        """Node f_cost decorator."""
         return self.g_cost + self.h_cost
 
     def __repr__(self):
@@ -32,8 +33,8 @@ class Astar:
     Inputs:
         start_pos (tuple): Node start position.
         end_pos (tuple): Node end position.
-        row_amount (integer): Number of rows in the grid.
-        column_amount (integer): Number of columns in the grid.
+        row_amount (int): Number of rows in the grid.
+        column_amount (int): Number of columns in the grid.
         wall_pos (set, tuples): set position of obstacles
     """
 
@@ -73,14 +74,13 @@ class Astar:
         self.set_h_cost(self.start_node)
 
     def set_h_cost(self, node):
-        """set heuristic cost for nodes to goal node"""
-
+        """Set heuristic cost for nodes to goal node."""
         node.h_cost = abs(node.pos[0] - self.end_node.pos[0]) + abs(
             node.pos[1] - self.end_node.pos[1]
         )
 
     def get_smallest_g_cost_unvisited_node(self):
-        """Returns the smallest distance node in unvisited node set"""
+        """Get the smallest distance node in unvisited node set."""
         node_list = []
         for column in self.grid:
             for node in column:
@@ -89,7 +89,7 @@ class Astar:
         return min(node_list, key=lambda x: x.g_cost)
 
     def get_smallest_h_cost_unvisited_node(self):
-        """Returns the smallest h_cost node in unvisited node set"""
+        """Return the smallest h_cost node in unvisited node set."""
         node_list = []
         for column in self.grid:
             for node in column:
@@ -98,7 +98,7 @@ class Astar:
         return min(node_list, key=lambda x: x.h_cost)
 
     def get_smallest_f_cost_unvisited_node(self):
-        """Returns the smallest f_cost node in unvisited node set"""
+        """Get the smallest f_cost node in unvisited node set."""
         node_list = []
         for column in self.grid:
             for node in column:
@@ -116,7 +116,7 @@ class Astar:
         return min_f_cost_node, len(min_f_cost_list)
 
     def get_neighbours(self, current_node):
-        """Returns neighbours from input node position based on grid size and wall_pos set"""
+        """Get neighbours from input node position based on grid size and wall_pos set."""
         neighbours_pos = set()
         for column, row in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             neighbor = (current_node.pos[0] + column, current_node.pos[1] + row)
@@ -132,23 +132,22 @@ class Astar:
         return neighbours
 
     def backtrack_path(self, current_node):
-        """Return the shortest path by starting from end node"""
+        """Perform the shortest path by starting from end node."""
         self.path.insert(0, current_node.pos)
         neighbours = self.get_neighbours(current_node)
         n_copy = list(neighbours)
-        for n in n_copy:
-            if n.pos not in self.visited_pos:
-                n_copy.remove(n)
+        for each in n_copy:
+            if each.pos not in self.visited_pos:
+                n_copy.remove(each)
         neighbours = n_copy.copy()
         smallest_node = min(neighbours, key=lambda x: x.g_cost)
         if self.start_pos in self.path:
             return self.path
-        else:
-            current_node = smallest_node
-            self.backtrack_path(current_node)
+        current_node = smallest_node
+        self.backtrack_path(current_node)
 
     def solve(self):
-        """Permforms Astar algorithm at a given start node"""
+        """Perform Astar algorithm at a given start node."""
         smallest_f = self.get_smallest_f_cost_unvisited_node()
         smallest_f_node = smallest_f[0]
 

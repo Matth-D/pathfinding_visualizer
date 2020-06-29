@@ -1,13 +1,8 @@
-from PySide2 import QtWidgets, QtGui, QtCore
+"""Dijkstra algorithm module."""
 
 
 class Node:
-    """Node Class containing attributes for pathfinding
-
-    Attributes:
-        pos (tuple): Node position on the grid.
-        g_cost (integer) : Cost of travel from start node to current node.
-        """
+    """Node class to populate algorithm grid."""
 
     def __init__(self, pos, g):
         self.pos = pos
@@ -61,7 +56,7 @@ class Dijkstra:
         self.start_node.g_cost = 0
 
     def get_smallest_g_cost_unvisited_node(self):
-        """Returns the smallest distance node in unvisited node set"""
+        """Get the smallest distance node in unvisited node set."""
         node_list = []
         for column in self.grid:
             for node in column:
@@ -70,7 +65,7 @@ class Dijkstra:
         return min(node_list, key=lambda x: x.g_cost)
 
     def get_neighbours(self, current_node):
-        """Returns neighbours from input node position based on grid size and wall_pos set"""
+        """Get neighbours from input node position based on grid size and wall_pos set."""
         neighbours_pos = set()
         for column, row in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             neighbor = (current_node.pos[0] + column, current_node.pos[1] + row)
@@ -86,7 +81,7 @@ class Dijkstra:
         return neighbours
 
     def backtrack_path(self, current_node):
-        """Return the shortest path by starting from end node"""
+        """Return the shortest path by starting from end node."""
         self.path.insert(0, current_node.pos)
         neighbours = self.get_neighbours(current_node)
         smallest_node = min(neighbours, key=lambda x: x.g_cost)
@@ -97,7 +92,7 @@ class Dijkstra:
             self.backtrack_path(current_node)
 
     def solve(self):
-        """Performs Dijkstra algorithm given start node"""
+        """Perform Dijkstra algorithm given start node."""
         current_node = self.get_smallest_g_cost_unvisited_node()
         if current_node.pos not in self.unvisited_pos:
             return

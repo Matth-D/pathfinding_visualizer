@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Shortest Path Visualizer."""
+# -*- coding: utf-8 -*-
 import time
 import sys
 import math
@@ -67,7 +67,6 @@ class DrawGrid(QtWidgets.QWidget):
         elif self.current == "end":
             self.end_pos = coordinates
         elif self.current == "wall":
-            if self.click == "left":
                 self.wall_pos.add(coordinates)
             if self.click == "right" and coordinates in self.wall_pos:
                 self.wall_pos.remove(coordinates)
@@ -222,9 +221,13 @@ class ShortestPathVisualizer(QtWidgets.QDialog):
         )
         self.algorithm_list = QtWidgets.QComboBox()
         self.algorithm_list.addItems(self.algorithm_type)
-        self.algorithm_list.setStyleSheet(
-            "font-size:15px;background-color:rgb(231, 76, 60);color:white;selection-background-color:rgb(255, 126, 110)"
-        )
+        css = """
+            font-size:15px;
+            background-color:rgb(231, 76, 60);
+            color:white;
+            selection-background-color:rgb(255, 126, 110)
+        """
+        self.algorithm_list.setStyleSheet(css)
         self.algorithm_list.currentTextChanged.connect(self.grid_widget.set_algorithm)
 
         self.horizontal_spacer_1 = QtWidgets.QSpacerItem(

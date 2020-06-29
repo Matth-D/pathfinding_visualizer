@@ -1,15 +1,9 @@
-from PySide2 import QtCore
-from . import dijkstra
+"""Dijkstra algorithm module."""
+import dijkstra
 
 
 class Node:
-    """Node Class containing attributes for pathfinding.
-
-    Attributes:
-        pos (tuple): Node position on the grid.
-        g_cost (int) : Cost of travel from start node to current node.
-
-    """
+    """Node class to populate algorithm grid."""
 
     def __init__(self, pos, g, h):
         self.pos = pos
@@ -72,8 +66,7 @@ class BiDijkstra:
         self.end_node.parent = "end"
 
     def set_h_cost(self, node, goal_node):
-        """set heuristic cost for nodes to goal node"""
-
+        """Set heuristic cost for nodes to goal node."""
         if node.pos in self.wall_pos:
             node.h_cost = self.inf
             return
@@ -82,7 +75,7 @@ class BiDijkstra:
         )
 
     def smallest_cost_node(self):
-        """Returns the smallest distance node in unvisited node set"""
+        """Return the smallest distance node in unvisited node set."""
         nodes = []
         for column in self.grid:
             for node in column:
@@ -91,7 +84,7 @@ class BiDijkstra:
         return min(nodes, key=lambda x: x.g_cost)
 
     def get_neighbours(self, current_node):
-        """Returns neighbours from input node position based on grid size and wall_pos set"""
+        """Return neighbours from input node position based on grid size and wall_pos set."""
         neighbours_pos = set()
         for column, row in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             neighbor = (
@@ -110,7 +103,7 @@ class BiDijkstra:
         return neighbours
 
     def solve(self):
-        """Performs Dijkstra algorithm given start node"""
+        """Perform Dijkstra algorithm given start node."""
         current_node = self.smallest_cost_node()
         if not current_node:
             return
@@ -133,27 +126,26 @@ class BiDijkstra:
 
         if self.middle_node:
             self.visited_pos.append(current_node.pos)
-            d1 = dijkstra.Dijkstra(
+            dijkstra_1 = dijkstra.Dijkstra(
                 self.start_pos,
                 self.middle_node.pos,
                 self.row_amount,
                 self.column_amount,
                 self.wall_pos,
             )
-            d2 = dijkstra.Dijkstra(
+            disjktra_2 = dijkstra.Dijkstra(
                 self.middle_node.pos,
                 self.end_pos,
                 self.row_amount,
                 self.column_amount,
                 self.wall_pos,
             )
-            d1.solve()
-            d2.solve()
-            self.path = d1.path + d2.path
+            dijkstra_1.solve()
+            disjktra_2.solve()
+            self.path = dijkstra_1.path + disjktra_2.path
             return
 
         self.unvisited_pos.remove(current_node.pos)
         self.visited_pos.append(current_node.pos)
         if self.unvisited_pos:
             self.solve()
-
