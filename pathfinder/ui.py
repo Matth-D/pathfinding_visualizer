@@ -67,7 +67,7 @@ class DrawGrid(QtWidgets.QWidget):
         elif self.current == "end":
             self.end_pos = coordinates
         elif self.current == "wall":
-                self.wall_pos.add(coordinates)
+            self.wall_pos.add(coordinates)
             if self.click == "right" and coordinates in self.wall_pos:
                 self.wall_pos.remove(coordinates)
 
