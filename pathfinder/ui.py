@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Shortest Path Visualizer"""
+"""Shortest Path Visualizer."""
 import time
 import sys
 import math
@@ -10,7 +10,7 @@ sys.setrecursionlimit(2000)
 
 
 class DrawGrid(QtWidgets.QWidget):
-    """Create custom widget to draw grid based on grid_widget dimensions"""
+    """Create custom widget to draw grid based on grid_widget dimensions."""
 
     def __init__(self, *args, **kwargs):
         self.cell_size = kwargs.pop("cell_size", 20)
@@ -25,16 +25,20 @@ class DrawGrid(QtWidgets.QWidget):
         self.shortest_path = []
         self.algorithm = None
         self.click = None
+        self.grid_width = None
+        self.grid_height = None
+        self.row_amount = None
+        self.column_amount = None
 
-    def paintEvent(self, event):
-        """Paint grid event"""
-
+    def paint_event(self):
+        """Paint grid event."""
         painter = QtGui.QPainter()
         painter.begin(self)
-        self.drawRectangles(painter)
+        self.draw_rectangles(painter)
         painter.end()
 
-    def mouseMoveEvent(self, event):
+    def mouse_move_event(self, event):
+        """Handle mouse move event."""
         mouse_coordinates = (event.x(), event.y())
         clicked_cell = self.get_clicked_cell(mouse_coordinates)
         self.set_current_coordinates(clicked_cell)
@@ -45,7 +49,8 @@ class DrawGrid(QtWidgets.QWidget):
 
         self.update()
 
-    def mousePressEvent(self, event):
+    def mouse_press_event(self, event):
+        """Handle mouse press event."""
         mouse_coordinates = (event.x(), event.y())
         clicked_cell = self.get_clicked_cell(mouse_coordinates)
         self.set_current_coordinates(clicked_cell)
@@ -56,7 +61,7 @@ class DrawGrid(QtWidgets.QWidget):
         self.update()
 
     def set_current_coordinates(self, coordinates):
-        """Set which cell to draw"""
+        """Set which cell to draw."""
         if self.current == "start":
             self.start_pos = coordinates
         elif self.current == "end":
@@ -68,20 +73,19 @@ class DrawGrid(QtWidgets.QWidget):
                 self.wall_pos.remove(coordinates)
 
     def set_start(self):
+        """Set current to start."""
         self.current = "start"
 
     def set_end(self):
+        """Set current to end."""
         self.current = "end"
 
     def set_walls(self):
+        """Set current to walls."""
         self.current = "wall"
 
-    def set_erase(self):
-        self.current = "erase"
-
     def get_clicked_cell(self, coordinates):
-        """Return cell coordinates from click coordinates"""
-
+        """Return cell coordinates from click coordinates."""
         max_x = self.cell_size * self.column_amount
         max_y = self.cell_size * self.row_amount
         if coordinates[0] > max_x or coordinates[1] > max_y:
@@ -91,12 +95,12 @@ class DrawGrid(QtWidgets.QWidget):
         return (clicked_column, clicked_row)
 
     def set_cell_size(self, value):
+        """Set cell size."""
         self.cell_size = value
         self.update()
 
     def set_algorithm(self, value):
-        """Set algorithm to solve"""
-
+        """Set algorithm to solve."""
         self.algorithm_value = value
         args = [
             self.start_pos,
@@ -113,8 +117,7 @@ class DrawGrid(QtWidgets.QWidget):
             self.algorithm = bidijkstra.BiDijkstra(*args)
 
     def solve_algorithm(self):
-        """Solve selected algorithm"""
-
+        """Solve selected algorithm."""
         if self.visited_pos:
             return
         self.set_algorithm(self.algorithm_value)
@@ -129,23 +132,20 @@ class DrawGrid(QtWidgets.QWidget):
             self.update_draw()
 
     def update_draw(self):
-        """Process event when item added to visited pos/shortest path list"""
-
+        """Process event when item added to visited pos/shortest path list."""
         QtWidgets.QApplication.processEvents()
         self.update()
         time.sleep(0.003)
 
     def reset_grid(self):
-        """Reset algo values"""
-
+        """Reset algo values."""
         self.wall_pos = set()
         self.visited_pos = []
         self.shortest_path = []
         self.update()
 
-    def drawRectangles(self, painter):
-        """Draw the grid based on algo data"""
-
+    def draw_rectangles(self, painter):
+        """Draw the grid based on algo data."""
         self.grid_width = self.width()
         self.grid_height = self.height()
         self.row_amount = math.floor(self.grid_height / self.cell_size)
@@ -174,18 +174,19 @@ class DrawGrid(QtWidgets.QWidget):
 
 
 class ShortestPathVisualizer(QtWidgets.QDialog):
+    """Create UI for shortest path visualizer."""
+
     def __init__(self):
         super(ShortestPathVisualizer, self).__init__()
         self.algorithm_type = ["A*", "DIJKSTRA", "BIDIRECTIONAL DIJKSTRA"]
         self.selected_algorithm = self.algorithm_type[0]
-        self.initUI()
+        self.init_ui()
         self.setGeometry(300, 300, self.app_size[0], self.app_size[1])
         self.setWindowTitle("Shortest Path Visualizer")
         self.center_window()
 
-    def initUI(self):
-        """Init UI layout"""
-
+    def init_ui(self):
+        """Init UI layout."""
         desktop = QtWidgets.QDesktopWidget()
         self.screen_size = desktop.availableGeometry(desktop.primaryScreen())
         self.app_size = (
@@ -263,8 +264,7 @@ class ShortestPathVisualizer(QtWidgets.QDialog):
         shortcut.activated.connect(self.close)
 
     def center_window(self):
-        """Centers window on screen"""
-
+        """Centers window on screen."""
         app_geo = self.frameGeometry()
         center_point = QtWidgets.QDesktopWidget().availableGeometry().center()
         app_geo.moveCenter(center_point)
@@ -272,6 +272,7 @@ class ShortestPathVisualizer(QtWidgets.QDialog):
 
 
 def main():
+    """Set main program function."""
     app = QtWidgets.QApplication(sys.argv)
     shortest_path_visualizer = ShortestPathVisualizer()
     shortest_path_visualizer.show()
