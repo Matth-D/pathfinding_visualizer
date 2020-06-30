@@ -30,14 +30,14 @@ class DrawGrid(QtWidgets.QWidget):
         self.row_amount = None
         self.column_amount = None
 
-    def paint_event(self):
+    def paintEvent(self, event):  # pylint: disable=invalid-name, unused-argument
         """Paint grid event."""
         painter = QtGui.QPainter()
         painter.begin(self)
         self.draw_rectangles(painter)
         painter.end()
 
-    def mouse_move_event(self, event):
+    def mouseMoveEvent(self, event):  # pylint: disable=invalid-name, unused-argument
         """Handle mouse move event."""
         mouse_coordinates = (event.x(), event.y())
         clicked_cell = self.get_clicked_cell(mouse_coordinates)
@@ -49,7 +49,7 @@ class DrawGrid(QtWidgets.QWidget):
 
         self.update()
 
-    def mouse_press_event(self, event):
+    def mousePressEvent(self, event):  # pylint: disable=invalid-name
         """Handle mouse press event."""
         mouse_coordinates = (event.x(), event.y())
         clicked_cell = self.get_clicked_cell(mouse_coordinates)

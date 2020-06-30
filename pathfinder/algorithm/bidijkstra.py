@@ -1,5 +1,5 @@
 """Dijkstra algorithm module."""
-import dijkstra
+from . import dijkstra  # pylint: disable=relative-beyond-top-level
 
 
 class Node:
