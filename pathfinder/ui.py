@@ -134,7 +134,7 @@ class DrawGrid(QtWidgets.QWidget):
         """Process event when item added to visited pos/shortest path list."""
         QtWidgets.QApplication.processEvents()
         self.update()
-        time.sleep(0.003)
+        time.sleep(0.0085)
 
     def reset_grid(self):
         """Reset algo values."""
