@@ -1,12 +1,12 @@
 ### REQUIREMENTS
 
-Python 3+ installed on your machine, add Python to PATH during the install  
+Python 3+ installed on your machine
 
 PySide2 --> `pip install PySide2` in a terminal
 
 ### HOW TO USE 
 
-In a terminal navigate to the pathfinding_visualizer repository and enter --> ```python pathfinder_exec.py```
+In a terminal navigate to the pathfinding_visualizer repository and enter --> ```py pathfinder_exec.py```
 
 Use top slider to adjust grid density  
 Pick a start position  
