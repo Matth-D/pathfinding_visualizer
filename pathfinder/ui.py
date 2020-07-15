@@ -158,6 +158,7 @@ class DrawGrid(QtWidgets.QWidget):
                 if (column, row) in self.wall_pos:
                     color = QtGui.QColor(63, 63, 63)
                 if (column, row) in self.visited_pos:
+                    # TODO : Implement correct way to do gradient
                     color = QtGui.QColor(
                         255 * self.mix[(column, row)],
                         255 * self.mix[(column, row)],
