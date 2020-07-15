@@ -14,7 +14,7 @@ class DrawGrid(QtWidgets.QWidget):
 
     def __init__(self, *args, **kwargs):
         self.cell_size = kwargs.pop("cell_size", 20)
-        self.algorithm_value = kwargs.pop("algorithm", "DIJKSTRA")
+        self.algorithm_value = kwargs.pop("algorithm", "Dijkstra")
         super().__init__(*args, **kwargs)
         self.threadpool = QtCore.QThreadPool()
         self.start_pos = (-1, -1)
@@ -108,11 +108,11 @@ class DrawGrid(QtWidgets.QWidget):
             self.column_amount,
             self.wall_pos,
         ]
-        if self.algorithm_value == "DIJKSTRA":
+        if self.algorithm_value == "Dijkstra":
             self.algorithm = dijkstra.Dijkstra(*args)
         if self.algorithm_value == "A*":
             self.algorithm = astar.Astar(*args)
-        if self.algorithm_value == "BIDIRECTIONAL DIJKSTRA":
+        if self.algorithm_value == "Bidirectionnal Dijkstra":
             self.algorithm = bidijkstra.BiDijkstra(*args)
 
     def solve_algorithm(self):
@@ -149,20 +149,20 @@ class DrawGrid(QtWidgets.QWidget):
         self.grid_height = self.height()
         self.row_amount = math.floor(self.grid_height / self.cell_size)
         self.column_amount = math.floor(self.grid_width / self.cell_size)
-        painter.setPen(QtGui.QColor(44, 62, 80))
+        painter.setPen(QtGui.QColor(63, 63, 63))
         for column in range(self.column_amount):
             for row in range(self.row_amount):
-                color = QtGui.QColor(247, 242, 235)
+                color = QtGui.QColor(35, 35, 35)
                 if (column, row) in self.wall_pos:
-                    color = QtGui.QColor(26, 37, 48)
+                    color = QtGui.QColor(63, 63, 63)
                 if (column, row) in self.visited_pos:
-                    color = QtGui.QColor(231, 76, 60)
+                    color = QtGui.QColor(0, 0, 0)
                 if (column, row) in self.shortest_path:
-                    color = QtGui.QColor(106, 235, 159)
+                    color = QtGui.QColor(254, 108, 10)
                 if (column, row) == self.start_pos:
-                    color = QtGui.QColor(131, 193, 243)
+                    color = QtGui.QColor(243, 181, 131)
                 if (column, row) == self.end_pos:
-                    color = QtGui.QColor(36, 103, 178)
+                    color = QtGui.QColor(212, 120, 18)
                 painter.setBrush(color)
                 painter.drawRect(
                     self.cell_size * column,
@@ -177,7 +177,7 @@ class ShortestPathVisualizer(QtWidgets.QDialog):
 
     def __init__(self):
         super(ShortestPathVisualizer, self).__init__()
-        self.algorithm_type = ["A*", "DIJKSTRA", "BIDIRECTIONAL DIJKSTRA"]
+        self.algorithm_type = ["A*", "Dijkstra", "Bidirectionnal Dijkstra"]
         self.selected_algorithm = self.algorithm_type[0]
         self.init_ui()
         self.setGeometry(300, 300, self.app_size[0], self.app_size[1])
@@ -193,11 +193,27 @@ class ShortestPathVisualizer(QtWidgets.QDialog):
             round(self.screen_size.height() * 0.8),
         )
         # --------------------------- Create layout here
-        self.setStyleSheet("background-color:rgb(44, 62, 80)")
+        self.setStyleSheet("background-color:rgb(63, 63, 63)")
         self.main_layout = QtWidgets.QVBoxLayout(self)
 
+        css_slider = """
+            QSlider::groove:horizontal {
+                background-color: rgb(100,100,100);
+                height: 4px;
+            }
+            QSlider::handle:horizontal {
+                background-color: rgb(12,12,12);
+                border-style: outset;
+                border-width: 1px;
+                border-color: rgb(60,60,60);
+                height: 30px;
+                width: 11px;
+                margin: -15px 0px;
+            }
+        """
         self.density_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
         self.density_slider.setMinimum(22)
+        self.density_slider.setStyleSheet(css_slider)
         default_cell_size = 50
         self.density_slider.setValue(default_cell_size)
         self.grid_widget = DrawGrid(
@@ -210,42 +226,53 @@ class ShortestPathVisualizer(QtWidgets.QDialog):
         self.main_layout.addWidget(self.grid_widget)
         self.main_layout.addLayout(self.layout_h1)
 
-        self.pick_start_button = QtWidgets.QPushButton("PICK START", self)
-        self.pick_start_button.setStyleSheet(
-            "font:Fira Code;font-size:15px;background-color:rgb(231, 76, 60);color:white"
-        )
+        css_button = """
+            QPushButton{
 
-        self.draw_walls_button = QtWidgets.QPushButton("DRAW WALLS", self)
-        self.draw_walls_button.setStyleSheet(
-            "font-size:15px;background-color:rgb(231, 76, 60);color:white"
-        )
+                font:helvetica;
+                font-size:14px;
+                background-color:rgb(39,39,39);
+                color:white;
+                border-radius:3px;
+                padding: 5px;
+            }
+            QPushButton:hover{
+                background-color:rgb(100,100,100);
+            }
+            QPushButton:pressed{
+                border-style:outset;
+                border-width: 1px;
+                border-color:rgb(115,115,115);
+            }
+        """
+        css_list = """
+            font: helvetica;
+            font-size:14px;
+            background-color:rgb(39, 39, 39);
+            color:white;
+            border-radius:3px;
+            padding: 3px;
+            selection-background-color:rgb(100,100,100);
+        """
+        self.pick_start_button = QtWidgets.QPushButton("Pick Start", self)
+        self.pick_start_button.setStyleSheet(css_button)
+        self.pick_end_button = QtWidgets.QPushButton("Pick End", self)
+        self.pick_end_button.setStyleSheet(css_button)
+        self.draw_walls_button = QtWidgets.QPushButton("Draw Walls", self)
+        self.draw_walls_button.setStyleSheet(css_button)
         self.algorithm_list = QtWidgets.QComboBox()
         self.algorithm_list.addItems(self.algorithm_type)
-        css = """
-            font-size:15px;
-            background-color:rgb(231, 76, 60);
-            color:white;
-            selection-background-color:rgb(255, 126, 110)
-        """
-        self.algorithm_list.setStyleSheet(css)
+        self.algorithm_list.setStyleSheet(css_list)
         self.algorithm_list.currentTextChanged.connect(self.grid_widget.set_algorithm)
 
         self.horizontal_spacer_1 = QtWidgets.QSpacerItem(
             40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
-        self.pick_end_button = QtWidgets.QPushButton("PICK END", self)
-        self.pick_end_button.setStyleSheet(
-            "font-size:15px;background-color:rgb(231, 76, 60);color:white"
-        )
 
-        self.run_button = QtWidgets.QPushButton("RUN", self)
-        self.run_button.setStyleSheet(
-            "font-size:15px;background-color:rgb(231, 76, 60);color:white"
-        )
-        self.reset_button = QtWidgets.QPushButton("RESET", self)
-        self.reset_button.setStyleSheet(
-            "font-size:15px;background-color:rgb(231, 76, 60);color:white"
-        )
+        self.run_button = QtWidgets.QPushButton("Run", self)
+        self.run_button.setStyleSheet(css_button)
+        self.reset_button = QtWidgets.QPushButton("Reset", self)
+        self.reset_button.setStyleSheet(css_button)
         self.layout_h1.addWidget(self.pick_start_button)
         self.layout_h1.addWidget(self.pick_end_button)
         self.layout_h1.addWidget(self.draw_walls_button)
