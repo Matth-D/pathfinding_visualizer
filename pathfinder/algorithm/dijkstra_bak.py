@@ -35,7 +35,6 @@ class Dijkstra:
         self.path = []
         self.start_node = Node(start_pos, 0)
         self.end_node = Node(end_pos, self.inf)
-        self.mix = {}
 
         # Init Grid
         self.grid = []
@@ -107,31 +106,13 @@ class Dijkstra:
             if neighbour_dist < new_dist:
                 continue
             neigh.g_cost = new_dist
-            mix_neigh = {neigh.pos: neigh.g_cost}
-            self.mix.update(mix_neigh)
-        mix_current = {current_node.pos: current_node.g_cost}
-        self.mix.update(mix_current)
-
         if (
             self.end_pos not in self.unvisited_pos
             or self.get_smallest_g_cost_unvisited_node() == self.inf
         ):
-            for key, value in self.mix.items():
-                self.mix[key] = round((value * 1.0) / self.end_node.g_cost, 3)
             self.backtrack_path(self.end_node)
-
         else:
             self.unvisited_pos.remove(current_node.pos)
             self.visited_pos.append(current_node.pos)
             current_node = self.get_smallest_g_cost_unvisited_node()
             self.solve()
-
-
-# start = (0, 0)
-# end = (4, 3)
-# row_amount = 5
-# column_amount = 5
-# wall_pos = (-1, -1)
-# d = Dijkstra(start, end, row_amount, column_amount, wall_pos)
-# d.solve()
-# print(d.mix)

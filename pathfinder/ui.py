@@ -29,6 +29,7 @@ class DrawGrid(QtWidgets.QWidget):
         self.grid_height = None
         self.row_amount = None
         self.column_amount = None
+        self.mix = {}
 
     def paintEvent(self, event):  # pylint: disable=invalid-name, unused-argument
         """Paint grid event."""
@@ -121,6 +122,7 @@ class DrawGrid(QtWidgets.QWidget):
             return
         self.set_algorithm(self.algorithm_value)
         self.algorithm.solve()
+        self.mix = self.algorithm.mix
 
         for each in self.algorithm.visited_pos:
             self.visited_pos.append(each)
@@ -152,11 +154,15 @@ class DrawGrid(QtWidgets.QWidget):
         painter.setPen(QtGui.QColor(63, 63, 63))
         for column in range(self.column_amount):
             for row in range(self.row_amount):
-                color = QtGui.QColor(35, 35, 35)
+                color = QtGui.QColor(30, 30, 30)
                 if (column, row) in self.wall_pos:
                     color = QtGui.QColor(63, 63, 63)
                 if (column, row) in self.visited_pos:
-                    color = QtGui.QColor(0, 0, 0)
+                    color = QtGui.QColor(
+                        255 * self.mix[(column, row)],
+                        255 * self.mix[(column, row)],
+                        255 * self.mix[(column, row)],
+                    )
                 if (column, row) in self.shortest_path:
                     color = QtGui.QColor(254, 108, 10)
                 if (column, row) == self.start_pos:
