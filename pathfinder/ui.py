@@ -145,6 +145,23 @@ class DrawGrid(QtWidgets.QWidget):
         self.shortest_path = []
         self.update()
 
+    def mix_colors(self, cd_1, cd_2, mix):
+        """Mix two colors based on multipliers
+
+        Args:
+            cd_1 (tuple): start color in rgb
+            cd_2 (tuple): end color in rgb
+            mix (float): multiplier between 0 and 10
+
+        Returns:
+            list: new mixed color
+        """
+        result = [0, 0, 0]
+        result[0] = cd_1[0] * (1 - mix) + cd_2[0] * (mix)
+        result[1] = cd_1[1] * (1 - mix) + cd_2[1] * (mix)
+        result[2] = cd_1[2] * (1 - mix) + cd_2[2] * (mix)
+        return result
+
     def draw_rectangles(self, painter):
         """Draw the grid based on algo data."""
         self.grid_width = self.width()
@@ -152,24 +169,23 @@ class DrawGrid(QtWidgets.QWidget):
         self.row_amount = math.floor(self.grid_height / self.cell_size)
         self.column_amount = math.floor(self.grid_width / self.cell_size)
         painter.setPen(QtGui.QColor(63, 63, 63))
+        cd_start = (25, 65, 89)
+        cd_end = (136, 140, 3)
         for column in range(self.column_amount):
             for row in range(self.row_amount):
-                color = QtGui.QColor(30, 30, 30)
+                color = QtGui.QColor(20, 20, 20)
                 if (column, row) in self.wall_pos:
                     color = QtGui.QColor(63, 63, 63)
                 if (column, row) in self.visited_pos:
-                    # TODO : Implement correct way to do gradient
-                    color = QtGui.QColor(
-                        255 * self.mix[(column, row)],
-                        255 * self.mix[(column, row)],
-                        255 * self.mix[(column, row)],
-                    )
+                    mix = self.mix[(column, row)]
+                    mix_cd = self.mix_colors(cd_start, cd_end, mix)
+                    color = QtGui.QColor(mix_cd[0], mix_cd[1], mix_cd[2])
                 if (column, row) in self.shortest_path:
-                    color = QtGui.QColor(254, 108, 10)
+                    color = QtGui.QColor(246, 159, 0)
                 if (column, row) == self.start_pos:
-                    color = QtGui.QColor(243, 181, 131)
+                    color = QtGui.QColor(126, 179, 39)
                 if (column, row) == self.end_pos:
-                    color = QtGui.QColor(212, 120, 18)
+                    color = QtGui.QColor(41, 104, 0)
                 painter.setBrush(color)
                 painter.drawRect(
                     self.cell_size * column,

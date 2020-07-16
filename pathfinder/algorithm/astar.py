@@ -51,6 +51,7 @@ class Astar:
         self.path = []
         self.start_node = Node(start_pos, 0, 0)
         self.end_node = Node(end_pos, self.inf, 0)
+        self.mix = {}
 
         # Init Grid
         self.grid = []
@@ -171,6 +172,10 @@ class Astar:
                 continue
             neigh.g_cost = new_dist
             self.set_h_cost(neigh)
+            mix_neigh = {neigh.pos: neigh.g_cost}
+            self.mix.update(mix_neigh)
+        mix_current = {current_node.pos: current_node.g_cost}
+        self.mix.update(mix_current)
 
         smallest_f = self.get_smallest_f_cost_unvisited_node()
         smallest_f_node = smallest_f[0]
@@ -180,6 +185,8 @@ class Astar:
             self.end_pos not in self.unvisited_pos
             or self.get_smallest_g_cost_unvisited_node() == self.inf
         ):
+            for key, value in self.mix.items():
+                self.mix[key] = round((value * 1.0) / self.end_node.g_cost, 3)
             self.backtrack_path(self.end_node)
         else:
             if smallest_f[1] > 1:

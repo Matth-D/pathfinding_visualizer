@@ -41,6 +41,7 @@ class BiDijkstra:
         self.start_node = Node(start_pos, 0, self.inf)
         self.end_node = Node(end_pos, self.inf, self.inf)
         self.middle_node = None
+        self.mix = {}
 
         # Init Grid
         self.grid = []
@@ -123,6 +124,10 @@ class BiDijkstra:
                 continue
             each.g_cost = new_dist
             each.parent = current_node.parent
+            mix_neigh = {each.pos: each.g_cost}
+            self.mix.update(mix_neigh)
+        mix_current = {current_node.pos: current_node.g_cost}
+        self.mix.update(mix_current)
 
         if self.middle_node:
             self.visited_pos.append(current_node.pos)
@@ -143,6 +148,8 @@ class BiDijkstra:
             dijkstra_1.solve()
             disjktra_2.solve()
             self.path = dijkstra_1.path + disjktra_2.path
+            for key, value in self.mix.items():
+                self.mix[key] = round((value * 1.0) / self.middle_node.g_cost, 3)
             return
 
         self.unvisited_pos.remove(current_node.pos)
