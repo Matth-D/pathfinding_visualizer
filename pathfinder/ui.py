@@ -175,7 +175,7 @@ class DrawGrid(QtWidgets.QWidget):
             for row in range(self.row_amount):
                 color = QtGui.QColor(20, 20, 20)
                 if (column, row) in self.wall_pos:
-                    color = QtGui.QColor(63, 63, 63)
+                    color = QtGui.QColor(75, 75, 75)
                 if (column, row) in self.visited_pos:
                     mix = self.mix[(column, row)]
                     mix_cd = self.mix_colors(cd_start, cd_end, mix)
@@ -216,7 +216,7 @@ class ShortestPathVisualizer(QtWidgets.QDialog):
             round(self.screen_size.height() * 0.8),
         )
         # --------------------------- Create layout here
-        self.setStyleSheet("background-color:rgb(63, 63, 63)")
+        self.setStyleSheet("background-color:rgb(75, 75, 75)")
         self.main_layout = QtWidgets.QVBoxLayout(self)
 
         css_slider = """
