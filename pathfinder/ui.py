@@ -146,7 +146,7 @@ class DrawGrid(QtWidgets.QWidget):
         self.update()
 
     def mix_colors(self, cd_1, cd_2, mix):
-        """Mix two colors based on multipliers
+        """Mix two colors based on multipliers.
 
         Args:
             cd_1 (tuple): start color in rgb
