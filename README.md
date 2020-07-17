@@ -6,6 +6,8 @@ PySide2 --> `pip install PySide2` in a terminal
 
 ### HOW TO USE 
 
+Demo video available here : https://vimeo.com/435805804
+
 In a terminal navigate to the pathfinding_visualizer repository and enter --> ```py pathfinder_exec.py```
 
 Use top slider to adjust grid density  
@@ -19,3 +21,4 @@ Select an algorithm from the list.
 
 Run the algorithm clicking the RUN button
 Reset grid by pressing the RESET button
+
