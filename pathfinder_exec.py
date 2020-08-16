@@ -1,7 +1,7 @@
 """Executable for shortest pathfinding visualizer.
 
 :Author: Matthieu Druaud
-:Sensei: Benoit Gielly
+Thanks to Benoit Gielly for the tips !
 """
 
 
