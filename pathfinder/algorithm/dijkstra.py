@@ -125,13 +125,3 @@ class Dijkstra:
             self.visited_pos.append(current_node.pos)
             current_node = self.get_smallest_g_cost_unvisited_node()
             self.solve()
-
-
-# start = (0, 0)
-# end = (4, 3)
-# row_amount = 5
-# column_amount = 5
-# wall_pos = (-1, -1)
-# d = Dijkstra(start, end, row_amount, column_amount, wall_pos)
-# d.solve()
-# print(d.mix)
