@@ -181,16 +181,3 @@ class Astar:
             else:
                 current_node = smallest_f_node
             self.solve()
-
-
-# start_pos = (0, 1)
-# end_pos = (2, 3)
-# wall_pos = [(0, 2), (1, 2)]
-# row_amount = 3
-# column_amount = 5
-# ast = Astar(start_pos, end_pos, row_amount, column_amount, wall_pos)
-# print(ast.grid)
-# ast.solve()
-# print(ast.path)
-# print(ast.grid)
-

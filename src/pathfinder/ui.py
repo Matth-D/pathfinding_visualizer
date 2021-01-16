@@ -94,7 +94,6 @@ class DrawGrid(QtWidgets.QWidget):
             return (-1, -1)
         clicked_column = math.floor((coordinates[0] / max_x) * self.column_amount)
         clicked_row = math.floor((coordinates[1] / max_y) * self.row_amount)
-        print((clicked_row, clicked_column), self.column_amount, self.row_amount)
         return (clicked_row, clicked_column)
 
     def set_cell_size(self, value):
