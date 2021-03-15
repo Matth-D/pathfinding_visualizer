@@ -18,7 +18,6 @@ class DrawGrid(QtWidgets.QWidget):
         self.cell_size = kwargs.pop("cell_size", 20)
         self.algorithm_value = kwargs.pop("algorithm", "Dijkstra")
         super().__init__(*args, **kwargs)
-        self.threadpool = QtCore.QThreadPool()
         self.start_pos = (-1, -1)
         self.wall_pos = set()
         self.end_pos = (-1, -1)
