@@ -1,8 +1,8 @@
 """A* (A-star) algorithm module."""
 
-from . import algo_utils
+import sys
 
-# import algo_utils
+from . import algo_utils
 
 algo_utils.append_libs()
 

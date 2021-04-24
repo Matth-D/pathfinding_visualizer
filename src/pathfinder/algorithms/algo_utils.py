@@ -6,7 +6,7 @@ import sys
 
 def append_libs():
     """Append user libs to sys.path."""
-    libs_path = os.path.join(os.path.dirname(__file__), "..", "..", "libs")
+    libs_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "libs")
     libs_path = os.path.abspath(libs_path)
 
     if libs_path not in sys.path:
